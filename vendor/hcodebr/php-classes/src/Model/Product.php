@@ -10,7 +10,27 @@ class Product extends Model {
     public static function listAll(){
 
         $sql = new Sql();
-        return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
+        $results = $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
+
+        foreach ($results as $key => $value) {
+
+            $dest = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .
+            "ecommerce" . DIRECTORY_SEPARATOR .
+            "res" . DIRECTORY_SEPARATOR .
+            "site" . DIRECTORY_SEPARATOR .
+            "img" . DIRECTORY_SEPARATOR .
+            "products" . DIRECTORY_SEPARATOR .
+            $value["idproduct"] . ".jpg";
+
+            if(!file_exists($dest)){
+                $results[$key]["desphoto"]="/ecommerce/res/site/img/product.jpg";
+            } else {
+                $results[$key]["desphoto"]="/ecommerce/res/site/img/products/".$value["idproduct"].".jpg";
+            }
+
+        }
+
+        return $results;
 
     }
 
